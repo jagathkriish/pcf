@@ -1,0 +1,7 @@
+required software:
+
+1) Python 3.X preferably 3.7
+2) pip
+3) python-ldap
+
+pip install python-ldap

@@ -1,0 +1,29 @@
+import subprocess
+import shlex
+import ldap
+
+con = ldap.initialize('ldap://localhost:10389', bytes_mode=False)
+con.simple_bind_s(u'cn=jagathpathi,ou=users,dc=example,dc=com', u'0787')
+
+login_command = 'clea'
+list_org_users = ''
+list_space_users = ''
+
+process = subprocess.Popen(shlex.split(login_command), stdout=subprocess.PIPE)
+stdout = process.communicate()[0]
+print(stdout)
+process = subprocess.Popen(shlex.split(list_org_users), stdout=subprocess.PIPE)
+stdout1 = process.communicate()[0]
+
+print(stdout1)
+for user in stdout1.splitlines():
+    data = con.search_s(u'ou=users,dc=example,dc=com', ldap.SCOPE_SUBTREE , u"(cn="+user+")")
+    if(len(data) != 0):
+        if 'memberOf' in data[0][1]:
+            group = data[0][1]['memberOf'][0].split(',')[0].split('=')[1]
+            if(group == 'PCF_Sandbox_SpaceDevelopers'):
+                print("user: "+user+" "+"found with group PCF_Sandbox_SpaceDevelopers")
+    else:
+        print('not ok')
+    print(data)
+    # code to compare with ldap and do things like add permission etc
