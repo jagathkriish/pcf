@@ -52,3 +52,17 @@ for server in server_data:
             worksheet.write(row,col+1, folder_data[1])
         row = row + 1
 workbook.close()
+
+file_name = 'machine_memory_details_'+st+'.xlsx'
+from_addr = 
+to_addr = 
+subject = 
+body = 
+email_cmd = 'echo '+body+' | mail -s '+subject+' -r '+from_addr+' -a '+file_name+' '+to_addr
+process2 = subprocess.Popen(shlex.split(email_cmd), stdout=subprocess.PIPE)
+stdout2 = process1.communicate()[0]
+print(stdout2)
+#remove file
+process3 = subprocess.Popen(shlex.split('rm '+file_name), stdout=subprocess.PIPE)
+stdout3 = process1.communicate()[0]
+print(stdout3)
